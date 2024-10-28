@@ -1,9 +1,12 @@
+import CreatePost from "./CreatePost";
 import React from "react";
 
 const Feeds = () => {
   return (
     <div>
-      <div>A</div>
+      <div>
+        <CreatePost />
+      </div>
       <div>B</div>
     </div>
   );

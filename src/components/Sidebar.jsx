@@ -16,6 +16,7 @@ const Logo = styled.div`
   height: 50px;
   width: 50px;
   margin: 20px;
+  margin-bottom: 30px;
 `;
 
 const Top = styled.div`
