@@ -1,3 +1,4 @@
+import AllPosts from "./AllPosts";
 import CreatePost from "./CreatePost";
 import React from "react";
 
@@ -7,7 +8,9 @@ const Feeds = () => {
       <div>
         <CreatePost />
       </div>
-      <div>B</div>
+      <div>
+        <AllPosts />
+      </div>
     </div>
   );
 };
