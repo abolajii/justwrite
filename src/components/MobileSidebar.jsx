@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Bottom = styled.div`
   position: fixed;
-  height: 50px;
+  height: 60px;
   z-index: 999;
   background-color: #f3f3f3;
 
