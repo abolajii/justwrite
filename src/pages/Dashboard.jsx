@@ -27,12 +27,13 @@ const TopInner = styled.div`
   position: sticky;
   top: 0;
   /* padding: 10px; */
-  /* background-color: #e1e1e1; */
+  background-color: #f3f3f3;
+
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); */
 
   margin-top: 10px;
 
-  /* background: red; */
+  z-index: 999;
 `;
 
 const Container = styled.div`

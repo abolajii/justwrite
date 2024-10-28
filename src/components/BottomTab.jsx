@@ -6,7 +6,9 @@ import { RiCalendarScheduleFill } from "react-icons/ri";
 import { Spinner } from "./Spinner";
 import styled from "styled-components";
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-top: 2px;
+`;
 
 const IconBox = styled.div`
   display: flex;
@@ -50,6 +52,10 @@ const Image = styled.img`
   max-height: 540px;
   object-fit: cover;
   border-radius: 4px;
+
+  @media (max-width: 768px) {
+    /* max-height: 500px; */
+  }
 `;
 
 const CloseButton = styled(FaTimes)`
