@@ -6,7 +6,7 @@ const useAuthStore = create((set) => ({
   user: null,
 
   // Login action
-  login: (user) => set({ isAuthenticated: true, user }),
+  setUser: (user) => set({ isAuthenticated: true, user }),
 
   // Logout action
   logout: () => set({ isAuthenticated: false, user: null }),

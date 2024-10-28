@@ -10,7 +10,7 @@ import { useToast } from "../context/ToastContext";
 
 const Login = () => {
   const [email, setEmail] = useState("abolajiking@example.com");
-  const [password, setPassword] = useState("Chinwe123");
+  const [password, setPassword] = useState("password123");
   const [loading, setLoading] = useState(false);
   const { setUser } = useAuthStore(); // Access setUser function from auth store
   const { addToast } = useToast();
@@ -36,7 +36,7 @@ const Login = () => {
       const response = await login(data);
 
       // Assuming response includes user data upon successful login
-      setUser(response.data.user); // Set the authenticated user in the store
+      setUser(response.user); // Set the authenticated user in the store
 
       addToast("Login successful!", "success"); // Show success notification
       setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds

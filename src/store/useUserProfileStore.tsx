@@ -5,8 +5,8 @@ const useUserProfileStore = create((set) => ({
   profile: {
     name: "",
     email: "",
-    bio: "",
-    avatar: "",
+    username: "",
+    profilePic: "",
   },
 
   // Action to update profile details
@@ -24,8 +24,8 @@ const useUserProfileStore = create((set) => ({
       profile: {
         name: "",
         email: "",
-        bio: "",
-        avatar: "",
+        username: "",
+        profilePic: "",
       },
     }),
 }));

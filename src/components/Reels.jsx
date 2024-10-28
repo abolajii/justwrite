@@ -1,6 +1,8 @@
 import { AiOutlinePlus } from "react-icons/ai"; // Import the add icon
 import React from "react";
+import { baseURLImg } from "../api";
 import styled from "styled-components";
+import useAuthStore from "../store/useAuthStore";
 
 const Container = styled.div`
   /* padding: 20px; */
@@ -41,12 +43,13 @@ const Image = styled.div`
   width: 50px;
   background-color: #313838;
   margin-bottom: 5px; /* Add margin below image for spacing */
-  border-radius: 4px;
+  border-radius: 6px;
+  overflow: hidden;
   img {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    border-radius: 6px;
+    /* border-radius: 6px; */
   }
 `;
 
@@ -66,17 +69,16 @@ const AddIcon = styled(AiOutlinePlus)`
 `;
 
 const Reels = () => {
+  const { user } = useAuthStore();
+  console.log(user);
   return (
     <Container>
       <One>
         <PositionedStory>
           <Image>
-            {/* {user?.image && (
-              <img
-                src={`${base_url}${user?.image?.filePath}`}
-                alt="User avatar"
-              />
-            )} */}
+            {user?.profilePic && (
+              <img src={`${baseURLImg}${user?.profilePic}`} alt="User avatar" />
+            )}
           </Image>
           <div>My Reels</div>
           <AddIcon size={11} /> {/* Add icon positioned at the bottom right */}
