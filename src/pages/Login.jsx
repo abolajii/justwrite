@@ -1,48 +1,58 @@
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
 import React, { useState } from "react";
 
-import { FiLogIn } from "react-icons/fi";
+import { Spinner } from "../components/Spinner";
+import { login } from "../api/requests";
 import styled from "styled-components";
-import useAuthStore from "../store/useAuthStore";
+import useAuthStore from "../store/useAuthStore"; // Assuming you have a store for auth state
+import { useNavigate } from "react-router-dom"; // For redirecting
 import { useToast } from "../context/ToastContext";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login, error } = useAuthStore();
-  const { addToast } = useToast(); // Access addToast function
+  const [email, setEmail] = useState("abolajiking@example.com");
+  const [password, setPassword] = useState("Chinwe123");
+  const [loading, setLoading] = useState(false);
+  const { setUser } = useAuthStore(); // Access setUser function from auth store
+  const { addToast } = useToast();
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if email or password is empty and show a toast if so
+    // Check for empty email or password and show a toast
     if (!email) {
       addToast("Email is required", "error");
       return;
     }
-
     if (!password) {
       addToast("Password is required", "error");
       return;
     }
 
-    // Attempt login and handle success/failure
-    await login(email, password);
-    if (!error) {
-      addToast("Logging in successful!", "success");
-      setTimeout(() => navigate("/dashboard"), 3000); // 3-second delay
-    } else {
-      addToast(error, "error");
+    setLoading(true);
+
+    try {
+      const data = { identifier: email, password };
+      const response = await login(data);
+
+      // Assuming response includes user data upon successful login
+      setUser(response.data.user); // Set the authenticated user in the store
+
+      addToast("Login successful!", "success"); // Show success notification
+      setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
+    } catch (error) {
+      console.log(error);
+      addToast(error.response?.data?.message || "Login failed", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Container>
       <LoginForm onSubmit={handleSubmit}>
-        <Title>
-          <FiLogIn size={24} />
-          Login
-        </Title>
+        <Title>Login</Title>
+        <p className="text-sm mb-3">Welcome back. Kindly log in.</p>
 
         <InputContainer>
           <AiOutlineMail size={20} />
@@ -64,9 +74,9 @@ const Login = () => {
           />
         </InputContainer>
 
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-
-        <LoginButton type="submit">Login</LoginButton>
+        <LoginButton type="submit" className="center">
+          {loading ? <Spinner /> : "Log in"}
+        </LoginButton>
       </LoginForm>
     </Container>
   );
@@ -74,7 +84,7 @@ const Login = () => {
 
 export default Login;
 
-// Style components remain the same...
+// Styled components
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -86,7 +96,6 @@ const Container = styled.div`
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -111,12 +120,6 @@ const InputContainer = styled.div`
   border-radius: 8px;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  width: 100%;
-  max-width: 100%;
-  &:focus-within {
-    outline: 2px solid rgba(74, 144, 226, 0.5); /* Add a blue outline when child input is focused */
-    border-radius: 8px; /* Ensure the outline matches the rounded look */
-  }
 `;
 
 const Input = styled.input`
@@ -129,15 +132,18 @@ const Input = styled.input`
 `;
 
 const LoginButton = styled.button`
-  width: 100%;
   background-color: #4a90e2;
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  padding: 0.75rem;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  width: 100%; /* Ensures full width */
 
   &:hover {
     background-color: #357abd;
