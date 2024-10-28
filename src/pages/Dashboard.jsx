@@ -1,7 +1,12 @@
-import React from 'react';
+import { MainContainer } from "../components";
+import React from "react";
 
 const Dashboard = () => {
-  return <h2>Dashboard Page</h2>;
+  return (
+    <MainContainer>
+      <div>Dashboard Page</div>
+    </MainContainer>
+  );
 };
 
 export default Dashboard;
