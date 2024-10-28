@@ -1,4 +1,4 @@
-import { FaImage, FaSmile } from "react-icons/fa";
+import { FaImage, FaSmile, FaTimes } from "react-icons/fa";
 import React, { useState } from "react";
 
 import { AiOutlineGif } from "react-icons/ai";
@@ -38,29 +38,85 @@ const ShareButton = styled.button`
   }
 `;
 
+const ImagePreview = styled.div`
+  position: relative;
+  display: inline-block;
+  margin-top: 3px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: 540px;
+  object-fit: cover;
+  border-radius: 4px;
+`;
+
+const CloseButton = styled(FaTimes)`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  padding: 3px;
+  cursor: pointer;
+`;
+
 const BottomTab = () => {
   const [loading, setLoading] = useState(false); // To handle loading state
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [file, setFile] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFile(file);
+      const imageUrl = URL.createObjectURL(file);
+      setSelectedImage(imageUrl);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setFile(null);
+  };
 
   return (
-    <Container className="flex align-center justify-between">
+    <Container className="flex justify-between flex-col">
       <div>
-        <IconBox>
-          <FaImage title="Add Image" />
-          <input
-            type="file"
-            id="imageUpload"
-            accept="image/*"
-            style={{ display: "none" }}
-          />
-          <FaSmile title="Add Emoji" className="relative" />
-          {/* <AiOutlineGif title="GIF" /> */}
-          <RiCalendarScheduleFill title="Schedule Post" />
-        </IconBox>
+        {/* Image preview with close button */}
+        {selectedImage && (
+          <ImagePreview>
+            <Image src={selectedImage} alt="Selected" />
+            <CloseButton onClick={handleRemoveImage} title="Remove Image" />
+          </ImagePreview>
+        )}
       </div>
-      <div>
-        <ShareButton className="center">
-          {loading ? <Spinner /> : "Share"}
-        </ShareButton>
+      <div className="flex justify-between align-center">
+        <div>
+          <IconBox>
+            <FaImage
+              title="Add Image"
+              onClick={() => document.getElementById("imageUpload").click()}
+            />
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
+            <FaSmile title="Add Emoji" className="relative" />
+            {/* <AiOutlineGif title="GIF" /> */}
+            <RiCalendarScheduleFill title="Schedule Post" />
+          </IconBox>
+        </div>
+        <div>
+          <ShareButton className="center">
+            {loading ? <Spinner /> : "Share"}
+          </ShareButton>
+        </div>
       </div>
     </Container>
   );

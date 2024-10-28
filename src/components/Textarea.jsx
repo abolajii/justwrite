@@ -6,12 +6,9 @@ const Container = styled.div`
   outline: none;
   font-size: 16px;
   min-height: 40px;
-  width: 100%;
-`;
-
-const MentionSpan = styled.span`
-  color: #007bff; /* Blue color for mentions */
-  font-weight: bold;
+  max-height: 60px;
+  width: 620px;
+  overflow-y: scroll;
 `;
 
 const Textarea = () => {

@@ -53,4 +53,14 @@ const Container = styled.div`
   @media (max-width: 768px) {
     padding: 10px;
   }
+
+  height: 100%;
+  overflow-y: scroll;
+
+  /* Hide scrollbar */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
 `;
