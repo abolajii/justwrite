@@ -29,7 +29,7 @@ const IconWrapper = styled.div`
   align-items: center;
   font-size: 18px;
   color: ${({ isActive }) =>
-    isActive ? "#36bbba" : "#333"}; // Change color based on active status
+    isActive ? "#36bbba" : "#929292"}; // Change color based on active status
   transition: color 0.3s;
 
   &:hover {
@@ -40,7 +40,7 @@ const IconWrapper = styled.div`
 const Label = styled.span`
   font-size: 10px;
   margin-top: 4px;
-  color: ${({ isActive }) => (isActive ? "#36bbba" : "#333")};
+  color: ${({ isActive }) => (isActive ? "#36bbba" : "#929292")};
 `;
 
 const MobileSidebar = () => {
