@@ -8,7 +8,6 @@ const Container = styled.div`
   min-height: 40px;
   max-height: 60px;
   overflow-y: scroll;
-  overflow-wrap: break-word;
   width: ${(props) => props.width}px; /* Dynamically set width */
 `;
 
