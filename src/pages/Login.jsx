@@ -1,20 +1,33 @@
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
-// src/pages/Login.js
 import React, { useState } from "react";
 
 import { FiLogIn } from "react-icons/fi";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore";
+import { useToast } from "../context/ToastContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error } = useAuthStore();
+  const { addToast } = useToast(); // Access addToast function
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
 
+    // Check if email or password is empty and show a toast if so
+    if (!email) {
+      addToast("Email is required", "error");
+      return;
+    }
+
+    if (!password) {
+      addToast("Password is required", "error");
+      return;
+    }
+
+    // Attempt login and handle success/failure
+    await login(email, password);
     if (!error) {
       addToast("Logging in successful!", "success");
       setTimeout(() => navigate("/dashboard"), 3000); // 3-second delay
@@ -22,6 +35,7 @@ const Login = () => {
       addToast(error, "error");
     }
   };
+
   return (
     <Container>
       <LoginForm onSubmit={handleSubmit}>
@@ -60,8 +74,7 @@ const Login = () => {
 
 export default Login;
 
-// src/pages/Login.js (continued, add after component code)
-
+// Style components remain the same...
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -100,6 +113,10 @@ const InputContainer = styled.div`
   margin-bottom: 1rem;
   width: 100%;
   max-width: 100%;
+  &:focus-within {
+    outline: 2px solid rgba(74, 144, 226, 0.5); /* Add a blue outline when child input is focused */
+    border-radius: 8px; /* Ensure the outline matches the rounded look */
+  }
 `;
 
 const Input = styled.input`
