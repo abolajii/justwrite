@@ -44,5 +44,13 @@ const Container = styled.div`
 
   .two {
     flex: 0.8;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
   }
 `;
