@@ -1,8 +1,12 @@
+import { BottomIcon, Modal } from "../components";
+import React, { useEffect, useState } from "react";
+import { likePost, passAlongPost } from "../api/requests";
+
 import { MdMoreHoriz } from "react-icons/md";
-import React from "react";
 import { baseURLImg } from "../api";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore";
+import usePostStore from "../store/usePostStore";
 
 const Container = styled.div`
   padding: 9px;
@@ -45,24 +49,85 @@ const Middle = styled.div`
   word-wrap: break-word;
 `;
 
-const ReplySection = ({ noReply }) => {
+const ReplySection = ({ noReply, quote, post, share, single }) => {
   const { user } = useAuthStore();
+  const [like, setLike] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { setSelectedPost, setHasComment, setPosts, posts } = usePostStore();
+  // useEffect(() => {
+  //   if (post.likes.includes(user?.id)) {
+  //     setLike(true);
+  //   } else {
+  //     setLike(false);
+  //   }
+  // }, [post.likes, user?._id]);
 
   if (noReply) {
     return (
-      <div className="flex justify-between pt-2 pb-2 pr-2 pl-2">
-        <div>A</div>
-        <div>B</div>
+      <div className="pr-2 pl-2">
+        <Modal
+          isOpen={isOpen}
+          closeModal={() => setIsOpen(false)}
+          onSubmit={() => {}}
+          onCancel={() => {}}
+          data={post}
+          share={share}
+          single={single}
+        />
+        <BottomIcon
+          showDropdown={showDropdown}
+          post={post}
+          like={like}
+          replyCount={
+            share ? post.originalPost.comments.length : post.comments.length
+          }
+          shareCount={
+            share ? post.originalPost.shares.length : post.shares.length
+          }
+          likeCount={share ? post.originalPost.likes.length : post.likes.length}
+          onReplyClick={() => {
+            setIsOpen(true);
+            setSelectedPost(post);
+            setHasComment(false);
+          }}
+          onLikeClick={async () => {
+            setLike(!like);
+            try {
+              await likePost(share ? post.originalPost._id : post._id);
+              // console.log(response);
+            } catch (e) {
+              console.log(e);
+            }
+          }}
+          onShareClick={() => {
+            // setShowDropdown(!showDropdown);
+            const sharePost = async () => {
+              const postId =
+                post.postType === "normal"
+                  ? post._id
+                  : post.postType === "quoted"
+                  ? post._id
+                  : post.originalPost._id;
+
+              try {
+                const response = await passAlongPost(postId);
+                const newPosts = [response, ...posts];
+                setPosts(newPosts);
+              } catch (e) {
+                console.log(e);
+              }
+            };
+
+            sharePost();
+          }}
+        />
       </div>
     );
   }
 
   return (
     <Container>
-      <div className="flex justify-between">
-        <div>A</div>
-        <div>B</div>
-      </div>
       <Reply className="flex gap-sm">
         <div>
           <Avi>
@@ -85,9 +150,8 @@ const ReplySection = ({ noReply }) => {
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
           </Middle>
-          <div className="flex justify-between">
-            <div>A</div>
-            <div>B</div>
+          <div className="pt-2">
+            <BottomIcon />
           </div>
         </div>
       </Reply>

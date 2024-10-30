@@ -72,7 +72,7 @@ const CloseButton = styled(FaTimes)`
   cursor: pointer;
 `;
 
-const BottomTab = ({ quote, reply, onSubmit, closeModal }) => {
+const BottomTab = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false); // To handle loading state
   const [selectedImage, setSelectedImage] = useState(null);
   const [file, setFile] = useState(null);
@@ -110,23 +110,6 @@ const BottomTab = ({ quote, reply, onSubmit, closeModal }) => {
     } catch (error) {
       setLoading(false);
       console.log(error);
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (quote || reply) {
-      setLoading(true);
-      try {
-        await onSubmit();
-        setLoading(false);
-        closeModal();
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    } else {
-      console.log("clicked", quote);
-      await submitPost();
     }
   };
 
@@ -182,7 +165,14 @@ const BottomTab = ({ quote, reply, onSubmit, closeModal }) => {
           </IconBox>
         </div>
         <div>
-          <ShareButton className="center" onClick={handleSubmit}>
+          <ShareButton
+            className="center"
+            onClick={() => {
+              setLoading(true);
+              // onSubmit ? onSubmit() : submitPost();
+              submitPost();
+            }}
+          >
             {loading ? <Spinner /> : "Share"}
           </ShareButton>
         </div>

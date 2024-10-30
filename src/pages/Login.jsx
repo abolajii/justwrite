@@ -1,11 +1,11 @@
 import { AiOutlineLock, AiOutlineMail } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom"; // For redirecting
 import React, { useState } from "react";
 
 import { Spinner } from "../components/Spinner";
 import { login } from "../api/requests";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore"; // Assuming you have a store for auth state
-import { useNavigate } from "react-router-dom"; // For redirecting
 import { useToast } from "../context/ToastContext";
 
 const Login = () => {
@@ -37,6 +37,9 @@ const Login = () => {
 
       // Assuming response includes user data upon successful login
       setUser(response.user); // Set the authenticated user in the store
+
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
 
       addToast("Login successful!", "success"); // Show success notification
       setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
@@ -77,6 +80,9 @@ const Login = () => {
         <LoginButton type="submit" className="center">
           {loading ? <Spinner /> : "Log in"}
         </LoginButton>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </LoginForm>
     </Container>
   );

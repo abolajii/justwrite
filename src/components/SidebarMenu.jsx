@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom"; // For navigation a
 import { AiOutlineBell } from "react-icons/ai"; // Mention icon
 import { BsChatDots } from "react-icons/bs"; // Conversation icon
 import styled from "styled-components";
+import useAuthStore from "../store/useAuthStore";
 
 const SidebarItem = styled.div`
   display: flex;
@@ -77,6 +78,8 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current path
 
+  const { logout } = useAuthStore();
+
   // Handle navigation
   const handleNavigation = (path) => {
     navigate(path);
@@ -84,9 +87,10 @@ const Sidebar = () => {
 
   // Handle logout: remove token, clear user data, redirect to login
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Assuming the token is stored in localStorage
-    localStorage.removeItem("user"); // Remove user data as well
+    // localStorage.removeItem("token"); // Assuming the token is stored in localStorage
+    // localStorage.removeItem("user"); // Remove user data as well
     navigate("/login"); // Redirect to login page
+    logout();
   };
 
   return (

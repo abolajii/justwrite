@@ -20,8 +20,6 @@ const AllPosts = () => {
       <SharedPost />
       <QuotePost />
       <SinglePost />
-      <SinglePost />
-      <SinglePost />
     </Container>
   );
 };

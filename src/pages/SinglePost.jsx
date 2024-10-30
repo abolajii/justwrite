@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+import { formatDate, formattedContent } from "../utils";
+
 import { MdMoreHoriz } from "react-icons/md";
 import React from "react";
 import ReplySection from "./ReplySection";
@@ -9,16 +12,15 @@ import useAuthStore from "../store/useAuthStore";
 const Container = styled.div`
   border-radius: 5px;
   background-color: #f3f3f3;
-  border: 1px solid #e0e0e0;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 `;
 
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 9px;
+  /* margin-bottom: 10px; */
 
   .name {
     font-size: 15px;
@@ -35,7 +37,7 @@ const Middle = styled.div`
   padding: 0 10px;
   font-size: 14.5px;
   line-height: 1.4;
-  margin-top: 16px;
+  margin-top: 6px;
   word-wrap: break-word;
 `;
 
@@ -65,51 +67,35 @@ const Avi = styled.div`
   }
 `;
 
-const SinglePost = () => {
-  const { user } = useAuthStore();
-
+const SinglePost = ({ post }) => {
   return (
     <Container>
       <Top>
         <div className="flex gap-sm">
           <div>
             <Avi>
-              {user?.profilePic && (
-                <img
-                  src={`${baseURLImg}${user?.profilePic}`}
-                  alt="User avatar"
-                />
-              )}
+              <img src={post.user?.profilePic} alt="User avatar" />
             </Avi>
           </div>
           <div className="flex flex-col">
-            <div className="name">Abolaji Ade-Ajayi</div>
-            <div className="time">5mins ago</div>
+            <div className="name">{post.user.name}</div>
+            <div className="time">{formatDate(post.createdAt)}</div>
           </div>
         </div>
         <div className="pointer">
           <MdMoreHoriz size={18} />
         </div>
       </Top>
-      <Middle>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-        repellat, recusandae libero fuga voluptate officiis repellendus culpa
-        assumenda rem placeat facere in blanditiis! Dignissimos temporibus enim
-        neque vitae aliquid perferendis quaerat accusantium unde eius officiis
-        corporis accusamus, placeat doloribus nihil laudantium iusto dolorum
-        nemo minima architecto quasi molestiae,orem ipsum dolor, sit amet
-        consectetur adipisicing elit. Modi a hic repellat, recusandae libero
-        fuga voluptate officiis repellendus culpa assumenda rem placeat facere
-        in blanditiis! Dignissimos temporibus enim neque vitae aliquid
-        perferendis quaerat accusantium unde eius officiis corporis accusamus,
-        placeat doloribus nihil laudantium iusto dolorum nemo minima architecto
-        quasi molestiae
-      </Middle>
-      {/* <Image>
-        <img src={bg} alt="alt preview" />
-      </Image> */}
-      <ReplySection />
-      {/* <Footer>Footer</Footer> */}
+      <Middle>{formattedContent(post.content)}</Middle>
+
+      {post?.imageUrl && (
+        <Image className="mb-1">
+          <img src={`${baseURLImg}${post?.imageUrl}`} alt="Project Update" />
+        </Image>
+      )}
+
+      {/* REPLY */}
+      <ReplySection noReply post={post} single />
     </Container>
   );
 };

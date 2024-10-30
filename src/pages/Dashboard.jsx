@@ -2,25 +2,45 @@ import Feeds from "./Feeds";
 import { MainContainer } from "../components";
 import React from "react";
 import Reels from "../components/Reels";
+import Widget from "./Widget";
 import styled from "styled-components";
+import usePostStore from "../store/usePostStore";
 
 const Dashboard = () => {
+  const { loading } = usePostStore();
   return (
     <MainContainer>
-      <Container>
+      <Container loading={loading}>
         <div className="one">
           <TopInner>
             <Reels />
           </TopInner>
           <Feeds />
         </div>
-        <div className="two">B</div>
+        <Three className="two">
+          <Widget />
+        </Three>
       </Container>
     </MainContainer>
   );
 };
 
 export default Dashboard;
+
+const Three = styled.div`
+  /* background-color: green; */
+  height: 100%;
+  overflow-y: scroll;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const TopInner = styled.div`
   /* height: 80px; */
@@ -38,6 +58,8 @@ const TopInner = styled.div`
 
 const Container = styled.div`
   display: flex;
+  height: 100vh;
+  overflow: ${({ loading }) => (loading ? "hidden" : "auto")};
 
   .one {
     flex: 1.2;
@@ -53,15 +75,5 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     padding: 10px;
-  }
-
-  height: 100%;
-  overflow-y: scroll;
-
-  /* Hide scrollbar */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  &::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
   }
 `;

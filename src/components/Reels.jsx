@@ -1,6 +1,5 @@
 import { AiOutlinePlus } from "react-icons/ai"; // Import the add icon
 import React from "react";
-import { baseURLImg } from "../api";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore";
 
@@ -70,14 +69,14 @@ const AddIcon = styled(AiOutlinePlus)`
 
 const Reels = () => {
   const { user } = useAuthStore();
-  console.log(user);
+  // console.log(user);
   return (
     <Container>
       <One>
         <PositionedStory>
           <Image>
             {user?.profilePic && (
-              <img src={`${baseURLImg}${user?.profilePic}`} alt="User avatar" />
+              <img src={user?.profilePic} alt="User avatar" />
             )}
           </Image>
           <div>My Reels</div>

@@ -101,7 +101,7 @@ const SinglePost = () => {
 
   return (
     <Container>
-      <div className="flex top align-center pt-3 pb-3 mr-2 ml-2">
+      <div className="flex top align-center pt-3 pb-3 mr-4 ml-4">
         <div>
           <SmallAvi>
             {user?.profilePic && (

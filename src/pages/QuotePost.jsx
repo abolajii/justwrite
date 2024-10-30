@@ -1,10 +1,23 @@
-import { Container } from "../shared/styles";
+/* eslint-disable react/prop-types */
+import { formatDate, formattedContent } from "../utils";
+
+import { BottomIcon } from "../components";
+// import { Container } from "../shared/styles";
 import { MdMoreHoriz } from "react-icons/md";
 import React from "react";
+import ReplySection from "./ReplySection";
 import { baseURLImg } from "../api";
 import bg from "../assets/images.jpeg";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore";
+
+const Container = styled.div`
+  border-radius: 5px;
+  background-color: #f3f3f3;
+  /* border: 1px solid #e0e0e0; */
+  margin-bottom: 15px;
+  margin-bottom: 30px;
+`;
 
 const Avi = styled.div`
   height: 36px;
@@ -22,8 +35,9 @@ const Avi = styled.div`
 
 export const Top = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 9px;
+  &.second {
+    padding: 9px;
+  }
 
   .name {
     font-size: 15px;
@@ -56,92 +70,69 @@ const Image = styled.div`
 const Inner = styled.div`
   border-radius: 5px;
   background-color: #ececec;
-  margin: 15px 0;
+  margin: 6px 0;
   /* padding: 9px; */
 `;
 
-const QuotePost = () => {
-  const { user } = useAuthStore();
-
+const QuotePost = ({ post }) => {
   return (
     <Container>
-      <Top className="flex mr-2 ml-2 gap-sm">
+      <Top className="flex gap-sm">
         <div>
           <Avi>
-            {user?.profilePic && (
-              <img src={`${baseURLImg}${user?.profilePic}`} alt="User avatar" />
+            {post?.user?.profilePic && (
+              <img src={post?.user?.profilePic} alt="User avatar" />
             )}
           </Avi>
         </div>
-        <div>
+        <div className="flex-1">
           <div className="flex justify-between">
             <div>
-              <div className="name">Oko Innocent</div>
-              <div className="time">2mins ago</div>
+              <div className="name">{post.user.name}</div>
+              <div className="time">{formatDate(post?.createdAt)}</div>
             </div>
             <div className="pointer">
               <MdMoreHoriz size={18} />
             </div>
           </div>
-          <Middle>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a hic
-          </Middle>
-          {/* <Image>
-            <img src={bg} alt="alt preview" />
-          </Image>
- */}
-          <Inner>
-            <Top>
-              <div className="flex gap-sm">
-                <div>
-                  <Avi>
-                    {user?.profilePic && (
-                      <img
-                        src={`${baseURLImg}${user?.profilePic}`}
-                        alt="User avatar"
-                      />
-                    )}
-                  </Avi>
-                </div>
-                <div className="flex flex-col">
-                  <div className="name">Abolaji Ade-Ajayi</div>
-                  <div className="time">5mins ago</div>
-                </div>
-              </div>
-              <div className="pointer">
-                <MdMoreHoriz size={18} />
-              </div>
-            </Top>
-            <Middle className="pl-4 pr-4 pb-3">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi a
-              hic repellat, recusandae libero fuga voluptate officiis
-              repellendus culpa assumenda rem placeat facere in blanditiis!
-              Dignissimos temporibus enim neque vitae aliquid perferendis
-              quaerat accusantium unde eius officiis corporis accusamus, placeat
-              doloribus nihil laudantium iusto dolorum nemo minima architecto
-              quasi molestiae,orem ipsum dolor, sit amet consectetur adipisicing
-              elit. Modi a hic repellat, recusandae libero fuga voluptate
-              officiis repellendus culpa assumenda rem placeat facere in
-              blanditiis! Dignissimos temporibus enim neque vitae aliquid
-              perferendis quaerat accusantium unde eius officiis corporis
-              accusamus, placeat doloribus nihil laudantium iusto dolorum nemo
-              minima architecto quasi molestiae
-            </Middle>
-            {/* <Image>
-              <img src={bg} alt="alt preview" />
-            </Image> */}
-          </Inner>
-          <div className="flex justify-between pr-2 pl-2">
-            <div>A</div>
-            <div>B</div>
-          </div>
         </div>
       </Top>
+
+      <Middle>{formattedContent(post.content)} </Middle>
+      {post?.imageUrl && (
+        <Image className="mb-1">
+          <img src={post?.imageUrl} alt="Project Update" />
+        </Image>
+      )}
+      <Inner>
+        <Top className="second">
+          <div className="flex gap-sm">
+            <div>
+              <Avi>
+                {post.originalPost?.user.profilePic && (
+                  <img
+                    src={post?.originalPost.user.profilePic}
+                    alt="User avatar"
+                  />
+                )}
+              </Avi>
+            </div>
+            <div className="flex flex-col">
+              <div className="name">{post?.originalPost.user.name}</div>
+              <div className="time">
+                {formatDate(post?.originalPost.createdAt)}
+              </div>
+            </div>
+          </div>
+        </Top>
+        <Middle className="pl-4 pr-4 pb-3">
+          {formattedContent(post.originalPost.content)}
+        </Middle>
+        {/* <Image>
+              <img src={bg} alt="alt preview" />
+            </Image> */}
+      </Inner>
+      <ReplySection noReply post={post} />
     </Container>
   );
 };
